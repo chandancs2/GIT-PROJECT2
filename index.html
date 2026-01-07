@@ -3,76 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Login Page</title>
+    <title>Login Page</title>
+
     <style>
-        /* Basic CSS for a centered form (optional) */
         body {
             font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #04AA6D, #028a5e);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f1f1f1;
         }
+
         .login-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 300px;
+            background: #fff;
+            padding: 25px;
+            width: 320px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.6s ease-in-out;
         }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         h2 {
             text-align: center;
+            margin-bottom: 20px;
             color: #333;
         }
+
         .input-group {
             margin-bottom: 15px;
+            position: relative;
         }
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
+
+        label {
+            font-size: 14px;
             color: #555;
         }
-        .input-group input {
+
+        input {
             width: 100%;
             padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box; /* Ensures padding doesn't affect width */
+            outline: none;
         }
+
+        input:focus {
+            border-color: #04AA6D;
+            box-shadow: 0 0 5px rgba(4, 170, 109, 0.5);
+        }
+
+        .show-password {
+            position: absolute;
+            right: 10px;
+            top: 38px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #04AA6D;
+        }
+
         button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: #04AA6D;
-            color: white;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            color: white;
             font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
         }
+
         button:hover {
-            opacity: 0.8;
+            background-color: #038c5a;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success {
+            color: green;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: #04AA6D;
+            text-decoration: none;
         }
     </style>
 </head>
+
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <!-- The form action attribute defines where the data is sent (e.g., "login.php" or "api/login") -->
-        <!-- The method attribute should be "POST" for security -->
-        <form action="#" method="POST">
-            <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <form onsubmit="return validateLogin()">
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username">
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password">
+            <span class="show-password" onclick="togglePassword()">Show</span>
+        </div>
+
+        <button type="submit">Login</button>
+
+        <div id="message"></div>
+    </form>
+
+    <div class="footer">
+        <a href="#">Forgot Password?</a>
     </div>
+</div>
+
+<script>
+    function validateLogin() {
+        let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+        let message = document.getElementById("message");
+
+        message.className = "";
+
+        if (username === "" || password === "") {
+            message.className = "error";
+            message.innerText = "❌ All fields are required";
+            return false;
+        }
+
+        if (password.length < 6) {
+            message.className = "error";
+            message.innerText = "❌ Password must be at least 6 characters";
+            return false;
+        }
+
+        message.className = "success";
+        message.innerText = "✅ Login successful (Frontend validation)";
+
+        return false; // prevent actual form submit
+    }
+
+    function togglePassword() {
+        let passwordField = document.getElementById("password");
+        let toggleText = document.querySelector(".show-password");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleText.innerText = "Hide";
+        } else {
+            passwordField.type = "password";
+            toggleText.innerText = "Show";
+        }
+    }
+</script>
+
 </body>
 </html>
+
 
